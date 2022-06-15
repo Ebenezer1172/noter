@@ -19,6 +19,7 @@ class _ViewScreenState extends State<ViewScreen> {
   String id = '';
   DateTime createdTime = DateTime.now();
   bool isDone = true;
+  bool isFavourite=false;
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<UserNotifier>(context);
@@ -52,7 +53,7 @@ class _ViewScreenState extends State<ViewScreen> {
               // Navigator.pop(context);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const Home()));
-              provider.addUser(User(title, note, id, createdTime, isDone));
+              provider.addUser(User(title, note, id, createdTime, isDone,isFavourite));
               provider.clear();
               // Navigator.pushNamed(context, '/home');
               // if (!_formkey.currentState!.validate()) {
@@ -61,7 +62,7 @@ class _ViewScreenState extends State<ViewScreen> {
               // _formkey.currentState!.save();
             },
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
         title: const Text('Create a new note'),
         centerTitle: true,
