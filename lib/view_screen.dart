@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:noter/home_page.dart';
@@ -15,11 +16,16 @@ class _ViewScreenState extends State<ViewScreen> {
   bool edit = false;
   // final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   String title = '';
-  String note = '';
+  String description = '';
   String id = '';
   DateTime createdTime = DateTime.now();
   bool isDone = true;
   bool isFavourite=false;
+  String email= FirebaseAuth.instance.currentUser!.email!;
+ 
+  
+
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<UserNotifier>(context);
@@ -53,7 +59,7 @@ class _ViewScreenState extends State<ViewScreen> {
               // Navigator.pop(context);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const Home()));
-              provider.addUser(User(title, note, id, createdTime, isDone,isFavourite));
+              provider.addUser(Note(title, description, id, createdTime, isDone,isFavourite,email));
               provider.clear();
               // Navigator.pushNamed(context, '/home');
               // if (!_formkey.currentState!.validate()) {
@@ -80,9 +86,12 @@ class _ViewScreenState extends State<ViewScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        TextFormField(
+                        TextFormField( 
                           onChanged: (_val) {
                             title = _val;
+                            setState(() {
+                              title=_val;
+                            });
                           },
                           maxLines: 2,
                           autocorrect: true,
@@ -103,7 +112,10 @@ class _ViewScreenState extends State<ViewScreen> {
                         //  const SizedBox(height: 1,),
                         TextFormField(
                           onChanged: (_val) {
-                            note = _val;
+                            description = _val;
+                            setState(() {
+                              description=_val;
+                            });
                           },
                           maxLines: 50,
                           autocorrect: true,

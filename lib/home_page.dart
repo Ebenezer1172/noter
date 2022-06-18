@@ -1,4 +1,5 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:noter/note_widget.dart';
 import 'package:noter/favourite_notes.dart';
@@ -57,6 +58,8 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
+        actions: [IconButton(onPressed:  ()=>FirebaseAuth.instance.signOut(), 
+        icon:const Icon(Icons.photo))],
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: const Text('Notes'),

@@ -6,7 +6,7 @@ String id = '';
 DateTime createdTime = DateTime.now();
 
 class FirebaseApi {
-  static Future<String> createUser(User user) async {
+  static Future<String> createUser(Note user) async {
     final docUser = FirebaseFirestore.instance.collection('Noter').doc();
     user.id = docUser.id;
     await docUser.set(user.toJson());
@@ -17,14 +17,18 @@ class FirebaseApi {
   static Stream<QuerySnapshot<Map<String, dynamic>>> readUsers() =>
       FirebaseFirestore.instance.collection('Noter').snapshots();
 
-      static Future updateUser(User user) async {
+      static Future updateUser(Note user) async {
         final docUser = FirebaseFirestore.instance.collection('Noter').doc(user.id);
 
         await docUser.update(user.toJson());
       }
 
-      static Future deleteUser(User user) async {
+      static Future deleteUser(Note user) async {
         final docUser = FirebaseFirestore.instance.collection('Noter').doc(user.id);
+        // FirebaseFirestore.instance
+        //                             .collection('notes')
+        //                             .doc(note['id'])
+        //                              .delete();
 
         await docUser.delete();
       }

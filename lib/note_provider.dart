@@ -15,29 +15,29 @@ class UserNotifier extends ChangeNotifier {
   TextEditingController get note => _note;
   TextEditingController get name => _name;
   bool isDone = false;
-  List<User> _userlist = [];
-  List<User> get userList => _userlist;
+  List<Note> _userlist = [];
+  List<Note> get userList => _userlist;
 
-  List<User> get users =>
+  List<Note> get users =>
       _userlist.where((userList) => userList.isDone == false).toList();
 
-  List<User> get userListFavourites =>
+  List<Note> get userListFavourites =>
       _userlist.where((userList) => userList.isDone == true).toList();
-
+ 
   final String _names = '';
   String get names => _names;
 
   
 
-  bool toggleUserStatus(User user) {
-    user.isDone = !user.isDone;
+  bool toggleUserStatus(Note user) {
+    user.isFavourite = !user.isFavourite;
  FirebaseApi.updateUser(user);
-     notifyListeners();
+    //  notifyListeners();
 
-    return user.isDone;
+    return user.isFavourite;
   }
 
-  addUser(User user) => FirebaseApi.createUser(user);
+  addUser(Note user) => FirebaseApi.createUser(user);
   //  addUser(User user) {
   //   _userlist.add(user);
   //   notifyListeners();
@@ -63,23 +63,29 @@ class UserNotifier extends ChangeNotifier {
     FirebaseApi.deleteUser(index);
   }
 
+
+  
+
+// deleteUser(User user)  => FirebaseApi.deleteUser(user);
+
+
   // deleteUser(index) =>FirebaseApi.deleteUser(index);
 
-  void setNotes(List<User> user) => _userlist = userList;
+  void setNotes(List<Note> user) => _userlist = userList;
 
-  void setNotess(List<User> userList) =>
+  void setNotess(List<Note> userList) =>
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         _userlist = userList;
 // @override
         notifyListeners();
       });
 
-  favouriteNote(User user) {
+  favouriteNote(Note user) {
     _userlist.add(user);
     notifyListeners();
   }
 
-  void updateUser(User user, String title, String description) {
+  void updateUser(Note user, String title, String description) {
     user.title = title;
     user.description = description;
 

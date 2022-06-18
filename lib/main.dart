@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
+import 'package:noter/account_creation_page.dart';
 import 'package:noter/firebase_options.dart';
+import 'package:noter/google_authen.dart';
+import 'package:noter/login_page.dart';
 import 'package:noter/view_screen.dart'; 
 import 'package:provider/provider.dart';
 import 'package:noter/home_page.dart';
@@ -15,9 +19,14 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<AuthenticationService>(create:(_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+         StreamProvider<User?>(create: (context)=> context.read<AuthenticationService>().authStateChanges , 
+         initialData:  null
+         ),
         ChangeNotifierProvider(
           create: (context) => UserNotifier(),
-        )
+        ),
       ],
       child: const MyApp(),
     ),
@@ -28,21 +37,67 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final navigatorKey =GlobalKey<NavigatorState>();
     return MaterialApp(
       theme: ThemeData(
          primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.white
       ),
       debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
       initialRoute: '/',
       routes: {
         // '/listscreen': (BuildContext context) => const NoteList(),
         // '/firstpage':  (BuildContext context) => const WelcomeScreen(),
         '/home': (BuildContext context) => const Home(),
         '/viewscreen': (BuildContext context) => const ViewScreen(),
-        //  '/editionscreen': (BuildContext context) => const  EditionScreen(),
+        '/myhomepage': (BuildContext context) => const  MyHomePage(),
       },
-      home: const Home(),
-    );
+      
+       home:StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            
+            // if (snapshot.hasData){
+            //   return const Home();
+            // }else{
+            //   return const LogInPage();
+            // }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+
+              return const Center(
+                child: Text(
+                    "Network error"),
+              );
+            } else if (snapshot.hasData) {
+              return const Home();
+            } else {
+              return const LogInPage();
+            }
+          },
+        ),
+      );
+    
+      // const AuthenticationWrapper(),
+    //);
   }
-}                                                                                                                                                                                                                                                                  
+}                 
+
+// class AuthenticationWrapper extends StatelessWidget {
+//   const AuthenticationWrapper({ Key? key }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//    final firebaseUser = context.watch<User>();
+//    // ignore: unnecessary_null_comparison
+//    if (firebaseUser != null){
+//     return const Home();
+//    }
+//   return const LogInPage();
+//   }
+// }

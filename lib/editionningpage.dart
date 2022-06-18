@@ -1,32 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:noter/note_model.dart';
-import '../../Models/Note.dart';
-import '../../Widgets/utils_snackbar.dart';
 
-
-class NoteEditingPage extends StatefulWidget {
+class EditingPage extends StatefulWidget {
   final Map note;
-  const NoteEditingPage({Key? key, required this.note}) : super(key: key);
+  const EditingPage({Key? key, required this.note}) : super(key: key);
 
   @override
-  State<NoteEditingPage> createState() => _NoteEditingPageState();
+  State<EditingPage> createState() => _EditingPageState();
 }
 
-class _NoteEditingPageState extends State<NoteEditingPage> {
-  final reference = FirebaseFirestore.instance.collection("notes").doc();
+class _EditingPageState extends State<EditingPage> {
   String title = '';
   String description = '';
   bool isFavourite = false;
   bool isDone = false;
+  String email='';
   DateTime createdTime =DateTime.now();
-  String id ='';
-  final TextEditingController controllerBody = TextEditingController();
-  final TextEditingController controllerTitle = TextEditingController();
+  final String id =FirebaseFirestore.instance.collection('Noter').id;
   final _formKey = GlobalKey<FormState>();
-  bool starFavorite = false;
+   
   @override
   void initState() {
     super.initState();
@@ -36,13 +29,48 @@ class _NoteEditingPageState extends State<NoteEditingPage> {
   Widget build(BuildContext context) {
     title = widget.note['title'];
     description = widget.note['description'];
+    final id = widget.note['id'];
     return Form(
       key: _formKey,
       child: Scaffold(
         appBar: AppBar(
-          title: TextFormField(
-            // validator: ,
-            // controller: controllerTitle,
+          title:const Text('Edit Your Note'),
+          centerTitle: true,
+          elevation: 2,
+          toolbarHeight: 50,
+          automaticallyImplyLeading: false,
+            leading: IconButton(onPressed:  (){
+Navigator.pop(context);
+            }, icon:const Icon(Icons.arrow_back)),
+
+          actions: [IconButton(
+              onPressed: () {
+                 
+                const snackBar =  SnackBar(content:  Text('Note Edited'),);
+                                         ScaffoldMessenger.of(context).showSnackBar(snackBar); 
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  updateUser(
+                      update: Note(title, description, id, createdTime, isDone, isFavourite,email));
+                   Navigator.pop(context);
+                } else {
+                  return;
+                }
+              },
+              icon: const Icon(
+                Icons.add,
+                color: Colors.black,
+              )),
+            const SizedBox(
+              width: 21,
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              TextFormField(
             initialValue: title,
             onChanged: (value) {
               setState(() {
@@ -69,70 +97,15 @@ class _NoteEditingPageState extends State<NoteEditingPage> {
                 fontSize: 27,
               ),
             ),
-            // onSaved: (value) {},
           ),
-          
-          elevation: 2,
-          toolbarHeight: 50,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  updateNote(
-                      update: User(title, description, id, createdTime, isDone, isFavourite)
-                  Navigator.pop(context);
-                } else {
-                  return;
-                }
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.black,
-              )),
-
-          actions: [
-            IconButton(
-                icon: const Icon(
-                  Icons.save_as_outlined,
-                ),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    updateNote(
-                        update: User(title, description, id, createdTime, isDone, isFavourite)
-                    Navigator.pop(context);
-                  } else {
-                    return;
-                  }
-                }),
-            const SizedBox(
-              width: 21,
-            ),
-          ],
-          //Font to use, SemiBold, regular,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
               TextFormField(
                 style:const TextStyle(fontSize: 20,),
                 maxLines: null,
-                // validator: ,
-                // controller: controllerBody,
                 initialValue: description,
                 onChanged: (value) {
                   setState(() {
                     description = value;
                   });
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "can't be empty";
-                  } else {
-                    return null;
-                  }
                 },
                 onSaved: (value) {
                   setState(() {
@@ -154,31 +127,11 @@ class _NoteEditingPageState extends State<NoteEditingPage> {
       ),
     );
   }
-
-  Future updateNote({
-    required User update,
+  Future updateUser({
+    required Note update,
   }) async {
-    final docNote =
-        FirebaseFirestore.instance.collection('notes').doc(widget.note['id']);
-
-    await docNote.update(update.toJson());
-  }
-
-  //Add to Favorites Method
-  Future addToFavorites() async {
-    final docNote = FirebaseFirestore.instance
-        .collection('notes')
-        .doc(FirebaseAuth.instance.currentUser!.email);
-    final favDocNote =
-        docNote.collection('favorite notes').doc(widget.note['id']);
-    final favNote = Note(
-        isFavorite: false,
-        timeAdded: DateTime.now().toString(),
-        body: description,
-        title: title,
-        id: docNote.id,);
-
-    final json = favNote.toJson();
-    await favDocNote.set(json);
-  }
+    final docUser =
+        FirebaseFirestore.instance.collection('Noter').doc(widget.note['id']);
+    await docUser.update(update.toJson());
+  }   
 }

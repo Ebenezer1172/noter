@@ -1,22 +1,25 @@
 // import 'package:note/utils.dart';
 // import 'package:note/utils.dart';
 
-class User {
+class Note {
   String title;
   String description;
   String id;
   DateTime createdTime;
-  bool isDone
-  //  = false
-   ;
-  User(this.title, this.description, this.id, this.createdTime, this.isDone);
-
-  User fromJson(Map<String, dynamic> json) => User(
+  bool isDone;
+  bool isFavourite;
+  String email;
+  Note(this.title, this.description, this.id, this.createdTime, 
+  this.isDone,this.isFavourite,this.email);
+  
+  Note fromJson(Map<String, dynamic> json) => Note(
         json['title'],
         json['description'],
         json['id'],
         json['createdTime'],
         json['isDone'],
+        json['isFavourite'],
+        json['email'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -25,6 +28,8 @@ class User {
         'id': id,
         'createdTime': createdTime,
         'isDone': isDone,
+        'isFavourite': isFavourite,
+        'email':email,
       };
 }
 
