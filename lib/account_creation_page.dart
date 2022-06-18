@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         const SizedBox(
-                          height: 24,
+                          height: 0,
                         ),
                         //                TextFormField(
                         //              controller: _fulllegalsurname,
@@ -187,10 +187,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         //              },
                         //              ),
 
-                        const SizedBox(height: 24),
+                       // const SizedBox(height: 24),
                         // const Text("E-mail address"   ),
                         const SizedBox(
-                          height: 8,
+                          height: 0,
                         ),
 
                         TextFormField(

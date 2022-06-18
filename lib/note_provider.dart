@@ -74,7 +74,7 @@ class UserNotifier extends ChangeNotifier {
   void setNotes(List<Note> user) => _userlist = userList;
 
   void setNotess(List<Note> userList) =>
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _userlist = userList;
 // @override
         notifyListeners();

@@ -58,8 +58,10 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
-        actions: [IconButton(onPressed:  ()=>FirebaseAuth.instance.signOut(), 
-        icon:const Icon(Icons.photo))],
+        actions: [
+          TextButton(
+            onPressed:  ()=>FirebaseAuth.instance.signOut(), 
+        child:const Text('Sign out'))],
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: const Text('Notes'),
