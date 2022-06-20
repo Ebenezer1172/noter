@@ -118,7 +118,7 @@ Navigator.pop(context);
                     fontSize: 20,
                   ),
                   border: InputBorder.none,
-                  hintText: "Type something...",
+                   
                 ),
               ),
             ],
@@ -135,3 +135,5 @@ Navigator.pop(context);
     await docUser.update(update.toJson());
   }   
 }
+
+  

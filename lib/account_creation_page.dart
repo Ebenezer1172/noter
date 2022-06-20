@@ -261,10 +261,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             width: 1000,
                             height: 56,
                             child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
+                                style:  ButtonStyle(
+                                  backgroundColor: 
                                       MaterialStateProperty.all<Color>(
-                                          const Color(0xFFDCDCDC)),
+                                        const  Color.fromARGB(255, 14, 208, 17)),
                                 ),
                                 child: const Text(
                                   'Create your account',
@@ -285,11 +285,27 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
                                 }),
-                          ),
+
+                                
+                          ), 
+                       
                         ),
                         const SizedBox(
                           height: 38,
                         ),
+                        Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [ 
+                        const  Text('Already have an Account?'),TextButton(onPressed:  (){
+                               Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) =>const LogInPage(),
+                  
+                ),
+              );
+                  // Navigator.pushNamed(context, '/myhomepage');
+                
+                        }, child:const Text('SignIn'))
+                        ],)
                       ],
                     ),
                   ),

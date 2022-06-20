@@ -5,7 +5,7 @@
 
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:noter/account_creation_page.dart';
 // import 'package:noter/home_page.dart';
@@ -38,20 +38,21 @@ final _formKey = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Log-in'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.camera),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) =>const MyHomePage(),
-              
-            ),
-          );
-              // Navigator.pushNamed(context, '/myhomepage');
-            },
-          )
+        // title: const Text('Log-in'),
+        actions:  [ 
+          Row(
+            children: [const Text('signUp'),
+              IconButton(onPressed:  () {
+                  Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) =>const MyHomePage(),
+                  
+                ),
+              );
+                  // Navigator.pushNamed(context, '/myhomepage');
+                },   icon:const Icon(Icons.logout),),
+            ],
+          ), 
         ],
       ),
       body: SafeArea(
@@ -192,21 +193,21 @@ final _formKey = GlobalKey<FormState>();
       builder: (context)=> const Center(
         child: CircularProgressIndicator(),)
     );
-   // try {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
-  // } on FirebaseAuthException 
-   //catch (e) {
-          // ignore: avoid_print
-     //     print(e);
-    // return  (e);
-   }
-   // ignore: prefer_typing_uninitialized_variables
-   //var navigatorKey;
+  //  // try {
+  //   await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: emailController.text.trim(),
+  //       password: passwordController.text.trim());
+  // // } on FirebaseAuthException 
+  //  //catch (e) {
+  //         // ignore: avoid_print
+  //    //     print(e);
+  //   // return  (e);
+  //  }
+  //  // ignore: prefer_typing_uninitialized_variables
+  //  //var navigatorKey;
    
-   // ignore: prefer_typing_uninitialized_variables
-   //var route;
-  // navigatorKey.currentState!.popUntil((( )=>route.isFirst()));
-  }
-   
+  //  // ignore: prefer_typing_uninitialized_variables
+  //  //var route;
+  // // navigatorKey.currentState!.popUntil((( )=>route.isFirst()));
+  // }
+}}

@@ -10,7 +10,7 @@ class Note {
   bool isFavourite;
   String email;
   Note(this.title, this.description, this.id, this.createdTime, 
-  this.isDone,this.isFavourite,this.email);
+  this.isDone,this.isFavourite,this.email,  );
   
   Note fromJson(Map<String, dynamic> json) => Note(
         json['title'],
