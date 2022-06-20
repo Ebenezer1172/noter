@@ -53,10 +53,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('create your account'),
-      ),
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: const Text('create your account'),
+      // ),
       // resizeToAvoidBottomInset: false,
 
       body: SafeArea(
