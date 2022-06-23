@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:noter/login_page.dart';
+// import 'package:noter/login_page.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -18,26 +19,50 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _passwordController = TextEditingController();
   // ignore: unused_field
   late bool _success;
+  bool isLogin = true;
   // ignore: unused_field
   late String _userEmail;
   String? myName;
   String myname = "create your account";
-  bool value = false;
+  // bool value = false;
   final _formKey = GlobalKey<FormState>();
+  bool isCheck=true;
 
-  void _register() async {
+    
+  bool isEmpty = true;
+   
+// Future _register() async{
+//   showDialog(
+//     context: context, 
+//   barrierDismissible: false,
+//   builder: (context) => const  Center(child:
+//     CircularProgressIndicator()));
+// try{
+//   await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
+// }
+// on FirebaseAuthException catch (e) {
+//   print(e);
+// }
+// _formKey.currentState!.popUntil((route)=>route
+// }
+// }
+
+  clear() {
+    _emailController.clear();
+    _passwordController.clear();
+  }
+  Future _register() async {
     final User? user = (
-      // showDialog(
-      //   context: context, 
-      //   barrierDismissible: false,
-      // builder:(context)=> const Center(child:   CircularProgressIndicator(),),);
-      // try{
-      await _auth.createUserWithEmailAndPassword(
+            // showDialog(
+            //   context: context,
+            //   barrierDismissible: false,
+            // builder:(context)=> const Center(child:   CircularProgressIndicator(),),);
+            // try{
+            await _auth.createUserWithEmailAndPassword(
       email: _emailController.text,
       password: _passwordController.text,
-    ))
-        .user;
-    if (user != null) {
+    )).user;
+    if (user!= null) {
       setState(() {
         _success = true;
         _userEmail = user.email!;
@@ -46,19 +71,19 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _success = false;
       });
-      // navigatorkey.currentState!.popUntil(route)=> route.isFirst;
     }
   }
+
+   @override
+    void dispose(){
+        _passwordController.dispose();
+        _emailController.dispose();
+        super.dispose();
+    }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: const Text('create your account'),
-      // ),
-      // resizeToAvoidBottomInset: false,
-
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -74,20 +99,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Create your account',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 35,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF000000),
                       )),
                 ),
-                const Divider(
-                  color: Colors.black,
-                  height: 2,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
+                
+                 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -95,56 +115,18 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         const Padding(
                           padding: EdgeInsets.only(left: 0, top: 19),
-                          // child: Text('Full legal first and middle name(s)')
                         ),
                         const SizedBox(
                           height: 8,
                         ),
-
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            //  TextFormField(
-                            //  controller: _fulllegalname,
-                            //  decoration: InputDecoration(
-                            //    hintText: ('Full legal first and middle name(s)'),
-                            //     border: OutlineInputBorder(
-                            //      borderRadius: BorderRadius.circular(7)
-                            //      ),
-                            //      contentPadding: const EdgeInsets.only(left: 8,right: 0),
-                            //  ),
-                            //  validator: (value){
-                            //      if (value.toString().isEmpty) {
-                            //   return  'mumu input something';
-                            //      }
-                            //     return null;
-                            //    },
-                            //  ),
-                            //    SizedBox(height: 8,),
-                            //            Text('As it appears on your valid hID')
                           ],
                         ),
                         const SizedBox(
                           height: 0,
                         ),
-                        //                TextFormField(
-                        //              controller: _fulllegalsurname,
-                        //              decoration: InputDecoration(
-                        //                hintText: ('Full legal surname'),
-                        //  border: OutlineInputBorder(
-                        //   borderRadius: BorderRadius.circular(7)
-                        //   ),
-
-                        //   contentPadding: const EdgeInsets.only(left: 8,right: 0),
-
-                        //              ),
-                        //                validator: (value){
-                        //                if (value.toString().isEmpty)  {
-                        //                return 'mumu input something';
-                        //                }
-                        //                return null;
-                        //                },
-                        //                ),
                         const SizedBox(
                           height: 8,
                         ),
@@ -154,45 +136,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             Padding(
                               padding: EdgeInsets.only(left: 0),
                             ),
-                            // Text('As it appears on your valid ID',),
                           ],
                         ),
-// Column(
-//   children: const [
-//     ListTile(
-//       title: Text('Laftette'),
-//       leading: Radio<SingingCharacter?>(value: value, groupValue: groupValue, onChanged: onChanged),
-//     )
-//   ],
-// ),
                         const SizedBox(
                           height: 24,
                         ),
-                        //  const Text("Phone Number",),
                         const SizedBox(height: 8),
                         const Padding(padding: EdgeInsets.only(right: 0)),
-                        //              TextFormField(
-                        //            controller: _phonenumber,
-                        //            decoration: InputDecoration(
-                        //              hintText: ('Example:8180000000'), border: OutlineInputBorder(
-                        // borderRadius: BorderRadius.circular(5)
-                        // ),
-                        // contentPadding: const EdgeInsets.only(left: 8,right: 0),
-                        //            ),
-                        //              validator: (value){
-                        //              if (value.toString().isEmpty) {
-                        //            return 'dont be silly,type something';
-                        //              }
-                        //              return null;
-                        //              },
-                        //              ),
-
-                       // const SizedBox(height: 24),
-                        // const Text("E-mail address"   ),
+                        const Text("E-mail address"),
                         const SizedBox(
                           height: 0,
                         ),
-
                         TextFormField(
                           controller: _emailController,
                           decoration: InputDecoration(
@@ -203,13 +157,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 const EdgeInsets.only(left: 8, right: 0),
                           ),
                           validator: (value) {
-                            if (value.toString().isEmpty) {
-                              return 'Your head is not correct';
+                            if (value.toString().isEmpty
+                                // .toString().isEmpty
+                                ) {
+                              return 'email cannot be empty' ;
                             }
-                            return null;
+                            return  null ;
                           },
                         ),
-
                         const SizedBox(
                           height: 24,
                         ),
@@ -217,7 +172,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(
                           height: 8,
                         ),
-
                         TextFormField(
                             controller: _passwordController,
                             obscureText: true,
@@ -228,84 +182,91 @@ class _MyHomePageState extends State<MyHomePage> {
                               contentPadding:
                                   const EdgeInsets.only(left: 8, right: 0),
                             ),
-                            validator: (value) {
-                              if (value.toString().isEmpty) {
-                                return 'dumb MF fill the form';
-                              }
-                              return null;
-                            }),
+                            
+                            // validator: (value) {
+                            //   if (value == null
+                            //       // .toString().isEmpty
+                            //       ) {
+                            //     return "Password cannot be empty";
+                            //   }
+                            //   return null;
+                            // }
+                            ),
                         const SizedBox(
                           height: 20,
                         ),
-                        //                SizedBox(height: 56,width: 1000,
-                        //            child:
-                        // ElevatedButton(onPressed: (() {
-                        //                Navigator.pushNamed(context, '/loginpage');
-                        //               if (_formKey.currentState! .validate()) {
-                        //  ScaffoldMessenger.of(context).showSnackBar(
-                        //    const SnackBar(content: Text('processing Data'),));
-                        //               }
-                        //              }
-                        //              ), child: const Text('create account')
-                        //              ),
-                        //                ),
-                        //       Padding(
-//                                  ),
-                        //      ),
-                        // Text('$ninjaLevel'),
                         const SizedBox(
-                          height: 8,
+                          height: 20,
                         ),
+                      //   Checkbox(
+                      //   value: isCheck,
+                      //   checkColor: Colors.black,
+                      //   activeColor: Colors.green,
+                      //   onChanged: (bool  value) {
+                      //     setState(() {
+                      //       isCheck = value;
+                      //     });
+                      //   },
+                      // ),
                         Center(
                           child: SizedBox(
                             width: 1000,
                             height: 56,
                             child: ElevatedButton(
-                                style:  ButtonStyle(
-                                  backgroundColor: 
-                                      MaterialStateProperty.all<Color>(
-                                        const  Color.fromARGB(255, 14, 208, 17)),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      const Color.fromARGB(255, 14, 208, 17)),
                                 ),
                                 child: const Text(
                                   'Create your account',
                                   style: TextStyle(fontSize: 16),
                                 ),
-                                onPressed: () async {
-                                  // secondScreen();
-                                 
-                                  if (_formKey.currentState!.validate()) {
-                               _register();
+                                onPressed: ()
+                                      async
+                                    { if (_formKey.currentState!.validate()) {
+                                       
+                              _register();   const snackBar = SnackBar(
+                                    content: Text('Account created'),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                      Navigator.pushNamed(context, '/logInPage');
+                                  // Navigator.of(context).pushReplacement(
+                                  //  MaterialPageRoute(
+                                  //    builder: (context) => const LogInPage()));    
                             }
-                             const snackBar =  SnackBar(content:  Text('Account created'),);
-                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                   Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) =>const LogInPage(),
-              
-            ),
-          );
-                                }),
-
-                                
-                          ), 
-                       
+   else {
+    return accountNotCreated();
+    }
+   
+                                  // if (_formKey.currentState!.validate()) {
+                                  //
+                                  //   ),
+                                  // );
+                                }
+                                ),
+                          ),
                         ),
                         const SizedBox(
                           height: 38,
                         ),
-                        Row(mainAxisAlignment: MainAxisAlignment.center,
-                          children: [ 
-                        const  Text('Already have an Account?'),TextButton(onPressed:  (){
-                               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) =>const LogInPage(),
-                  
-                ),
-              );
-                  // Navigator.pushNamed(context, '/myhomepage');
-                
-                        }, child:const Text('SignIn'))
-                        ],)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Already have an Account?'),
+                            TextButton(
+                                onPressed: () {
+                                  // Navigator.of(context).pushReplacement(
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => const LogInPage(),
+                                  //   ),
+                                  // );
+                                   Navigator.pushNamed(context, '/logInPage');
+                                },
+                                child: const Text('SignIn'))
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -316,5 +277,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+  void accountNotCreated(){
+     const snackBar = SnackBar(
+                                    content: Text('Account not created'),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
   }
 }

@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:noter/home_page.dart';
 import 'package:noter/note_provider.dart';
  
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp( 
@@ -52,52 +51,46 @@ class MyApp extends StatelessWidget {
         '/home': (BuildContext context) => const Home(),
         '/viewscreen': (BuildContext context) => const ViewScreen(),
         '/myhomepage': (BuildContext context) => const  MyHomePage(),
+        '/logInPage': (BuildContext context) => const LogInPage(),
       },
       
        home:StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            
-            // if (snapshot.hasData){
+            if(snapshot.connectionState == ConnectionState.waiting){
+             return const Center(child:CircularProgressIndicator());
+            }
+            // else if (snapshot.hasData){
             //   return const Home();
             // }else{
             //   return const LogInPage();
             // }
-
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-
-              return const Center(
-                child: Text(
-                    "Network error"),
-              );
-            } else if (snapshot.hasData) {
-              return const Home();
-            } else {
+            if(snapshot.hasData) {
+return const Home();
+            }
+            else{
               return const LogInPage();
             }
+            // if (snapshot.connectionState == ConnectionState.waiting) {
+            //   return const Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // } else if (
+            //   snapshot.hasError
+            //   ) {
+
+            //   return const Center(
+            //     child: Text(
+            //         "Network error"),
+            //   );
+            // } else if (snapshot.hasData) {
+            //   return const Home();
+            // }
+            //  else {
+            //   return const LogInPage();
+            // }
           },
         ),
-      );
-    
-      // const AuthenticationWrapper(),
-    //);
+      ); 
   }
-}                 
-
-// class AuthenticationWrapper extends StatelessWidget {
-//   const AuthenticationWrapper({ Key? key }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//    final firebaseUser = context.watch<User>();
-//    // ignore: unnecessary_null_comparison
-//    if (firebaseUser != null){
-//     return const Home();
-//    }
-//   return const LogInPage();
-//   }
-// }
+}         
