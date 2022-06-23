@@ -17,7 +17,9 @@ class _EditingPageState extends State<EditingPage> {
   bool isDone = false;
   String email='';
   DateTime createdTime =DateTime.now();
-  final String id =FirebaseFirestore.instance.collection('Noter').id;
+  final String id =FirebaseFirestore.instance.collection('Noter')
+  .doc()//update
+  .id;
   final _formKey = GlobalKey<FormState>();
    
   @override
@@ -30,6 +32,7 @@ class _EditingPageState extends State<EditingPage> {
     title = widget.note['title'];
     description = widget.note['description'];
     final id = widget.note['id'];
+    final email =widget.note['email'];//update
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -66,7 +69,7 @@ Navigator.pop(context);
             ),
           ],
         ),
-        body: Padding(
+        body:SingleChildScrollView(child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
@@ -124,6 +127,7 @@ Navigator.pop(context);
             ],
           ),
         ),
+      ),
       ),
     );
   }

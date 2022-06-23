@@ -54,43 +54,64 @@ class MyApp extends StatelessWidget {
         '/logInPage': (BuildContext context) => const LogInPage(),
       },
       
-       home:StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting){
-             return const Center(child:CircularProgressIndicator());
-            }
-            // else if (snapshot.hasData){
-            //   return const Home();
-            // }else{
-            //   return const LogInPage();
-            // }
-            if(snapshot.hasData) {
-return const Home();
-            }
-            else{
-              return const LogInPage();
-            }
-            // if (snapshot.connectionState == ConnectionState.waiting) {
-            //   return const Center(
-            //     child: CircularProgressIndicator(),
-            //   );
-            // } else if (
-            //   snapshot.hasError
-            //   ) {
+       home:const Qwerty()
+//        StreamBuilder<User?>(
+//           stream: FirebaseAuth.instance.authStateChanges(),
+//           builder: (context, snapshot) {
+//             if(snapshot.connectionState == ConnectionState.waiting){
+//              return const Center(child:CircularProgressIndicator());
+//             }
+//             // else if (snapshot.hasData){
+//             //   return const Home();
+//             // }else{
+//             //   return const LogInPage();
+//             // }
+//             if(snapshot.hasData) {
+// return const Home();
+//             }
+//             else{
+//               return const LogInPage();
+//             }
+//             // if (snapshot.connectionState == ConnectionState.waiting) {
+//             //   return const Center(
+//             //     child: CircularProgressIndicator(),
+//             //   );
+//             // } else if (
+//             //   snapshot.hasError
+//             //   ) {
 
-            //   return const Center(
-            //     child: Text(
-            //         "Network error"),
-            //   );
-            // } else if (snapshot.hasData) {
-            //   return const Home();
-            // }
-            //  else {
-            //   return const LogInPage();
-            // }
-          },
-        ),
+//             //   return const Center(
+//             //     child: Text(
+//             //         "Network error"),
+//             //   );
+//             // } else if (snapshot.hasData) {
+//             //   return const Home();
+//             // }
+//             //  else {
+//             //   return const LogInPage();
+//             // }
+//           },
+//         ),
       ); 
   }
 }         
+
+class Qwerty extends StatelessWidget {
+  const Qwerty({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+     return Scaffold(
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const Home();
+          } else {
+            return const LogInPage();
+          }
+        },
+      ),
+    );
+  }
+}

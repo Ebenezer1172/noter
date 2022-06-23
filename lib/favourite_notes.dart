@@ -24,18 +24,21 @@ class Favourites extends StatelessWidget {
   return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
             .collection('Noter')
-            .where('email',isEqualTo: FirebaseAuth.instance.currentUser!.email)
+            .where('email',isEqualTo: FirebaseAuth.instance.currentUser?.email)
             .where('isFavourite',isEqualTo: true)
             .snapshots(),
         builder: (
           context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
         ) {
+
+          
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
+           
           if (snapshot.hasData) {
 
             //
@@ -56,8 +59,7 @@ class Favourites extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                        splashColor: Colors.green,
-                               onTap: (){
-
+                               onTap: (){ 
                                },
                       child: Card(
                         color: Colors
@@ -104,7 +106,7 @@ class Favourites extends StatelessWidget {
                                             ),
                                           ]),
                                       Text(
-                                        note['title'] ??= "",
+                                        note['title']  ,
                                         softWrap: true,
                                         style: const TextStyle(
                                           color: Colors.black,
@@ -115,7 +117,7 @@ class Favourites extends StatelessWidget {
                                         height: 2,
                                       ),
                                       Text(
-                                        note['description'] ??= "",
+                                        note['description']  ,
                                         style: const TextStyle(fontSize: 15),
                                       ),
                                     ],

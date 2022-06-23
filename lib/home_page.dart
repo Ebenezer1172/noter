@@ -25,6 +25,11 @@ class _HomeState extends State<Home> {
       const Favourites(),
     ];
     return Scaffold(
+//       drawer: Drawer(
+//         child:ListView(children:const [
+// Text('logout'),
+//         ]) ,
+//       ),
       backgroundColor: Colors.lightGreen[200],
       floatingActionButton: FloatingActionButton(
           hoverElevation: 150,
@@ -59,9 +64,15 @@ class _HomeState extends State<Home> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
         actions: [
-          TextButton(
-            onPressed:  ()=>FirebaseAuth.instance.signOut(), 
-        child:const Text('Sign out'))],
+          IconButton( icon:const Icon(Icons.logout),
+          onPressed:() {
+            FirebaseAuth.instance.signOut();
+          const snackBar =  SnackBar(content:  Text('Logged Out'),);
+           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+           
+          }
+          )
+          ],
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: const Text('Notes'),
@@ -84,4 +95,5 @@ class _HomeState extends State<Home> {
           // }),
     );
   }
-}
+  }
+

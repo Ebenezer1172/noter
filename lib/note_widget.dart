@@ -27,7 +27,7 @@ class _ListBuilderState extends State<ListBuilder> {
         stream: FirebaseFirestore.instance
         .collection('Noter')
         .where('email',
-        isEqualTo: FirebaseAuth.instance.currentUser!.email)
+        isEqualTo: FirebaseAuth.instance.currentUser?.email)
         .snapshots(),
         builder: (
           context,
@@ -123,7 +123,7 @@ class _ListBuilderState extends State<ListBuilder> {
                                           ]),
                                       Text(
                                          
-                                        note['title'] ??= "",
+                                        note['title']  ,
                                         softWrap: true,
                                         style: const TextStyle( 
                                          
@@ -135,7 +135,7 @@ class _ListBuilderState extends State<ListBuilder> {
                                         height: 2,
                                       ),
                                       Text(
-                                        note['description'] ??= "",
+                                        note['description']  ,
                                         style: const TextStyle(fontSize: 15,
                                          
                                          ),
@@ -152,6 +152,7 @@ class _ListBuilderState extends State<ListBuilder> {
                   );
                 });
           }
+          
           return const Center(
             child: Text(
               'No New Notes',
