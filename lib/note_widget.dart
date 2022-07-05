@@ -12,12 +12,12 @@ class ListBuilder extends StatefulWidget {
 }
 
 class _ListBuilderState extends State<ListBuilder> {
-   Color _iconColor = Colors.white;
+  Color _iconColor = Colors.white;
   bool edit = false;
-  bool isDone =false;
-  bool isFavourite =false;
-  DateTime createdTime=DateTime.now();
- 
+  bool isDone = false;
+  bool isFavourite = false;
+  DateTime createdTime = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     // var provider = Provider.of<UserNotifier>(context);
@@ -25,10 +25,9 @@ class _ListBuilderState extends State<ListBuilder> {
 
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
-        .collection('Noter')
-        .where('email',
-        isEqualTo: FirebaseAuth.instance.currentUser?.email)
-        .snapshots(),
+            .collection('Noter')
+            .where('email', isEqualTo: FirebaseAuth.instance.currentUser?.email)
+            .snapshots(),
         builder: (
           context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
@@ -37,13 +36,12 @@ class _ListBuilderState extends State<ListBuilder> {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          }
-          if (snapshot.hasData) {
+          } else if (snapshot.hasData) {
             return ListView.builder(
-              //  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              //   maxCrossAxisExtent: 200,
-              //   crossAxisSpacing: 20,
-              //   mainAxisSpacing: 20),
+                //  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                //   maxCrossAxisExtent: 200,
+                //   crossAxisSpacing: 20,
+                //   mainAxisSpacing: 20),
                 // separatorBuilder: ((context, index) => Container(
                 //       color: Colors.green,
                 //       height: 1,
@@ -59,20 +57,18 @@ class _ListBuilderState extends State<ListBuilder> {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
-                        splashColor: Colors.green,
-                             
-                                onTap: () => Navigator.push(
+                      splashColor: Colors.green,
+                      onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => EditingPage(
                                     note: note,
                                   ))),
-                              
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Card(
-                          color: Colors
-                              .primaries[Random().nextInt(Colors.primaries.length)],
+                          color: Colors.primaries[
+                              Random().nextInt(Colors.primaries.length)],
                           child: Expanded(
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -83,26 +79,33 @@ class _ListBuilderState extends State<ListBuilder> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             IconButton(
-                                            color: _iconColor,
-                                              onPressed:  (){
-                                                setState(() { 
-                                                   _iconColor = Colors.red;
+                                              color: _iconColor,
+                                              onPressed: () {
+                                                setState(() {
+                                                  _iconColor = Colors.red;
                                                 });
-                                              FirebaseFirestore.instance
-                                              .collection('Noter')
-                                              .doc(note['id'])
-                                              .update( {'isFavourite':  true,}  ); 
-                                            const snackBar =  SnackBar(content:  Text('Added to Favourites'),);
-                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                            }, 
-                                            icon:const Icon(Icons.favorite),
+                                                FirebaseFirestore.instance
+                                                    .collection('Noter')
+                                                    .doc(note['id'])
+                                                    .update({
+                                                  'isFavourite': true,
+                                                });
+                                                const snackBar = SnackBar(
+                                                  content: Text(
+                                                      'Added to Favourites'),
+                                                );
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(snackBar);
+                                              },
+                                              icon: const Icon(Icons.favorite),
                                             ),
                                             const SizedBox(
                                               width: 1,
@@ -111,22 +114,23 @@ class _ListBuilderState extends State<ListBuilder> {
                                               onPressed: () {
                                                 // provider.deleteUser(User('title', 'description', 'id', createdTime, isDone, isFavourite));
                                                 FirebaseFirestore.instance
-                                        .collection('Noter')
-                                        .doc(note['id'])
-                                         .delete();
-                                          const snackBar =  SnackBar(content:  Text('Note Deleted'),);
-                                           ScaffoldMessenger.of(context).showSnackBar(snackBar); 
+                                                    .collection('Noter')
+                                                    .doc(note['id'])
+                                                    .delete();
+                                                const snackBar = SnackBar(
+                                                  content: Text('Note Deleted'),
+                                                );
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(snackBar);
                                               },
-                                              icon:
-                                                  const Icon(Icons.delete_forever),
+                                              icon: const Icon(
+                                                  Icons.delete_forever),
                                             ),
                                           ]),
                                       Text(
-                                         
-                                        note['title']  ,
+                                        note['title'],
                                         softWrap: true,
-                                        style: const TextStyle( 
-                                         
+                                        style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,
                                         ),
@@ -135,10 +139,10 @@ class _ListBuilderState extends State<ListBuilder> {
                                         height: 2,
                                       ),
                                       Text(
-                                        note['description']  ,
-                                        style: const TextStyle(fontSize: 15,
-                                         
-                                         ),
+                                        note['description'],
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -152,7 +156,6 @@ class _ListBuilderState extends State<ListBuilder> {
                   );
                 });
           }
-          
           return const Center(
             child: Text(
               'No New Notes',

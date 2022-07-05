@@ -12,6 +12,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:noter/account_creation_page.dart';
+import 'package:noter/home_page.dart';
+import 'package:noter/utils.dart';
 // import 'package:noter/home_page.dart';
 // import 'package:noter/home_page.dart';
 
@@ -48,10 +50,6 @@ import 'package:noter/account_creation_page.dart';
 class LogInPage extends StatefulWidget {
   const LogInPage({Key? key}) : super(key: key);
 
-
-
-
-
   @override
   State<LogInPage> createState() => _LogInPageState();
 }
@@ -66,10 +64,10 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     @override
     // ignore: unused_element
-    void dispose(){
-        _passwordController.dispose();
-        _emailController.dispose();
-        super.dispose();
+    void dispose() {
+      _passwordController.dispose();
+      _emailController.dispose();
+      super.dispose();
     }
 
     // TextEditingController emailController;
@@ -206,9 +204,10 @@ class _LogInPageState extends State<LogInPage> {
                                     const EdgeInsets.only(left: 20, right: 20),
                                 child: ElevatedButton(
                                   child: const Text('Log in'),
-                                  onPressed: () async {
+                                  onPressed: () {
                                     if (_formKey.currentState!.validate()) {
-                                      signIn();
+                                      print("validate");
+                                      signIn(context);
                                     }
                                     {
                                       // InvalidCredentials();
@@ -225,17 +224,16 @@ class _LogInPageState extends State<LogInPage> {
                           children: [
                             const Text('Dont have an Account?'),
                             TextButton(
-                                child: const Text('Create an Account '),
-                                onPressed: 
-                                  () {
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) => const MyHomePage(),
-                                      ),
-                                    );
-                                    // Navigator.pushNamed(context, '/myhomepage');
-                                  },
-                                )
+                              child: const Text('Create an Account '),
+                              onPressed: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const MyHomePage(),
+                                  ),
+                                );
+                                // Navigator.pushNamed(context, '/myhomepage');
+                              },
+                            )
                           ],
                         )
                       ],
@@ -264,22 +262,29 @@ class _LogInPageState extends State<LogInPage> {
 //     print('Login OK? $loginOK');
 //   }
 
-  Future signIn() async {
+  Future signIn(BuildContext context) async {
     showDialog(
-        context: context,
-        builder: (context) => const Center(
-            child: SizedBox(
-                height: 30, width: 30, child: CircularProgressIndicator())),
-        barrierDismissible: true);
-   // try {
+      context: context,
+      builder: (context) => const Center(
+          child: SizedBox(
+              height: 30, width: 30, child: CircularProgressIndicator())),
+    );
+    try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
-      Navigator.pop(context);
-    // } on FirebaseAuthException catch (e) {
-    //   // ignore: avoid_print
-    //   print(e);
-    // }
+      // Navigator.pop(context);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      // ignore: avoid_print
+
+      print(e);
+      Utils.showSnackBar(e.message);
+    }
 
 // navigatorKey.currentState!.popUntil((route)=>route.isFirst);
 // void InvalidCredentials(){

@@ -1,6 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:noter/login_page.dart';
 import 'package:noter/note_widget.dart';
 import 'package:noter/favourite_notes.dart';
 // import 'package:note/user.dart';
@@ -20,7 +21,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-
       const ListBuilder(),
       const Favourites(),
     ];
@@ -64,36 +64,41 @@ class _HomeState extends State<Home> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
         actions: [
-          IconButton( icon:const Icon(Icons.logout),
-          onPressed:() {
-            FirebaseAuth.instance.signOut();
-          const snackBar =  SnackBar(content:  Text('Logged Out'),);
-           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-           
-          }
-          )
-          ],
+          IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                const snackBar = SnackBar(
+                  content: Text('Logged Out'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const LogInPage(),
+                  ),
+                );
+              })
+        ],
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: const Text('Notes'),
       ),
-      body: 
-      
-      // StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      //     stream: FirebaseFirestore.instance.collection('Note').snapshots(),
-      //     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-      //       if (snapshot.connectionState == ConnectionState.waiting) {
-      //         return const Center(
-      //           child: CircularProgressIndicator(),
-      //         );
-      //       }
-      //       if (snapshot.hasData){
-      //                     return 
-                          tabs[_selectedIndex],
-          //   }
-          //   return const Text('data');
-          // }),
+      body:
+
+          // StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          //     stream: FirebaseFirestore.instance.collection('Note').snapshots(),
+          //     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //       if (snapshot.connectionState == ConnectionState.waiting) {
+          //         return const Center(
+          //           child: CircularProgressIndicator(),
+          //         );
+          //       }
+          //       if (snapshot.hasData){
+          //                     return
+          tabs[_selectedIndex],
+      //   }
+      //   return const Text('data');
+      // }),
     );
   }
-  }
-
+}
